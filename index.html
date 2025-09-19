@@ -12,20 +12,157 @@
     <style>
         * {
             font-family: 'Roboto';
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
+        body {
+            background: #f9fafb;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #search-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #search-input {
+            width: 40%;
+            height: 30px;
+            border: #374151 1px solid;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #memberList {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 20px;
+            margin: 100px;
+            margin-top: 50px !important;
+        }
+
+        .member-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            height: 180px;
+        }
+
+
+        .member-card h1 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: black;
+            text-align: center;
+            font-weight: bolder;
+        }
+
+        .member-card h2 {
+            font-size: 16px;
+            margin-bottom: 6px;
+            color: #374151;
+            text-align: center;
+        }
+
+        .member-card p {
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #4b5563;
+        }
+
+        .member-card a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .member-card a:hover {
+            text-decoration: underline;
+        }
+
+        .website {
+            background: #2563eb;
+            padding: 6px;
+            width: 60px;
+            align-self: flex-end;
+            border-radius: 10px;
+            text-align: center;
+            margin: 5px;
+        }
+
+        .website:hover {
+            background-color: #163f96;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+        .bio {
+            width: 80% !important;
+            margin: auto;
+        }
+
+        @media (max-width: 767px) {
+            #memberList {
+                grid-template-columns: repeat(1, 1fr);
+                grid-template-rows: repeat(1, 1fr);
+                margin: 40px;
+                margin-top: 20px !important;
+            }
+
+            #search-input {
+                width: 80% !important;
+            }
+
+            .member-card{
+                height: auto;
+            }
+        }
+
+        @media (min-width:767px) and (max-width:1024px) {
+                        #memberList {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                margin: 50px;
+                margin-top: 30px !important;
+            }
+
+            #search-input {
+                width: 80% !important;
+            }
+
+            .member-card{
+                height: auto;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <h1>Tsukijou Members</h1>
-    <input id="search-input" type="search">
+    <h1 style="margin: 40px;">Tsukijou Members</h1>
+    <form id="search-form">
+        <input id="search-input" type="search">
+    </form>
     <div id="memberList">
     </div>
 
 
     <script>
         const memberList = document.getElementById("memberList");
+        const searchForm = document.getElementById("search-form")
+        const searchInput = document.getElementById("search-input");
         let members = [];
 
         async function getMember() {
@@ -43,7 +180,6 @@
             renderList(members);
         }
 
-
         function renderList(list) {
             memberList.innerHTML = "";
             const div = document.createElement("div");
@@ -59,9 +195,9 @@
                 div.innerHTML = `
                                 <div class="member-card">
                                 <h1 class="id"> ${member.id}</h1>
-                                <p class="title"> ${member.title}</p>
+                                <h2 class="title"> ${member.title}</h2>
                                 <p class="bio"> ${member.bio}</p>
-                                <p class="website"> <a href="${member.website}">${member.website}</a></p>
+                                <p class="website"> <a href="${member.website}">Visit</a></p>
                                 </div>
                                 `
                 memberList.appendChild(div)
@@ -69,8 +205,22 @@
 
         }
 
+
+        function searchMember() {
+            const sInput = (searchInput.value || "").trim().toLowerCase();
+            if (!sInput) {
+                renderList(members);
+                return;
+            }
+            const filtered = members.filter(member =>
+                (member.id || "").toLowerCase().includes(sInput)
+            );
+            renderList(filtered);
+        }
+
+        searchInput.addEventListener('input', searchMember);
+
         getMember();
-        renderList(members);
 
     </script>
 </body>
