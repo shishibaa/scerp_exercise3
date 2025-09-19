@@ -19,6 +19,7 @@
 
         body {
             background: #f9fafb;
+            height: 100vh;
         }
 
         h1 {
@@ -26,8 +27,8 @@
         }
 
         #search-form {
-            margin-bottom: 20px;
             text-align: center;
+            margin: auto !important;
         }
 
         #search-input {
@@ -42,7 +43,6 @@
         #memberList {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
             gap: 20px;
             margin: 100px;
             margin-top: 50px !important;
@@ -57,7 +57,7 @@
             transition: transform 0.2s;
             display: flex;
             flex-direction: column;
-            height: 180px;
+            min-height: 200px;
         }
 
 
@@ -95,6 +95,7 @@
             align-self: flex-end;
 
         }
+
         .website a {
             text-decoration: none !important;
             background: #2563eb;
@@ -102,7 +103,7 @@
             width: 60px;
             border-radius: 10px;
             text-align: center;
-            margin: 5px;
+            margin: auto;
         }
 
         .website a:hover {
@@ -110,9 +111,14 @@
 
         }
 
+        .bio-wrapper {
+            min-height: 70px;
+        }
+
         .bio {
             width: 80% !important;
             margin: auto;
+            margin-top: 0;
         }
 
         @media (max-width: 767px) {
@@ -127,7 +133,16 @@
                 width: 80% !important;
             }
 
+            #search-form {
+                margin: auto !important;
+            }
+
             .member-card {
+                height: auto;
+            }
+
+
+            .bio-wrapper {
                 height: auto;
             }
         }
@@ -147,6 +162,14 @@
             .member-card {
                 height: auto;
             }
+
+            .bio-wrapper {
+                height: auto;
+            }
+
+            #search-form {
+                margin: auto !important;
+            }
         }
     </style>
 </head>
@@ -158,7 +181,6 @@
     </form>
     <div id="memberList">
     </div>
-
 
     <script>
         const memberList = document.getElementById("memberList");
@@ -186,7 +208,7 @@
             const div = document.createElement("div");
 
             if (!list.length) {
-                div.innerHTML = `Member Not Found`
+                div.innerHTML = `<p>Member Not Found</p>`
                 memberList.appendChild(div);
                 return;
             }
@@ -197,7 +219,7 @@
                                 <div class="member-card">
                                 <h1 class="id"> ${member.id}</h1>
                                 <h2 class="title"> ${member.title}</h2>
-                                <p class="bio"> ${member.bio}</p>
+                                <div class = "bio-wrapper"><p class="bio"> ${member.bio}</p></div>
                                 <p class="website"> <a href="${member.website}">Visit</a></p>
                                 </div>
                                 `
@@ -205,7 +227,6 @@
             });
 
         }
-
 
         function searchMember() {
             const sInput = (searchInput.value || "").trim().toLowerCase();
@@ -220,9 +241,7 @@
         }
 
         searchInput.addEventListener('input', searchMember);
-
         getMember();
-
     </script>
 </body>
 
