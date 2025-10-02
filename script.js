@@ -60,7 +60,7 @@ function renderList(list) {
         let websiteHtml = `<a href="#" class="visit-err">Visit</a>`;
         if (member.website && isValidHttpUrl(member.website)) {
             const safeHref = escapeHtml(member.website);
-            websiteHtml = `<a class="visit-link" href="${safeHref}" target="_blank" >Visit</a>`;
+            websiteHtml = `<a class="visit-link" href="${safeHref}" target="_blank" rel="noopener noreferrer">Visit</a>`;
         }
         div.innerHTML = `
                                 <div class="member-card">
